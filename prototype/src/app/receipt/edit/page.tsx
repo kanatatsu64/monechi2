@@ -69,7 +69,20 @@ export default function EditReceipt() {
                   key={i}
                   className="bg-white p-4 rounded-lg shadow space-y-2"
                 >
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center space-x-3">
+                    <button
+                      onClick={() =>
+                        setShowMemberSelect({ type: "share", index: i })
+                      }
+                    >
+                      {item.shareWith[0] ? (
+                        <MemberIcon name={item.shareWith[0]} />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center">
+                          <span className="text-gray-400">+</span>
+                        </div>
+                      )}
+                    </button>
                     <input
                       type="text"
                       value={item.name}
@@ -90,22 +103,6 @@ export default function EditReceipt() {
                       }}
                       className="w-24 text-right"
                     />
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-gray-500">請求先:</span>
-                    <button
-                      onClick={() =>
-                        setShowMemberSelect({ type: "share", index: i })
-                      }
-                    >
-                      {item.shareWith[0] ? (
-                        <MemberIcon name={item.shareWith[0]} />
-                      ) : (
-                        <div className="w-8 h-8 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center">
-                          <span className="text-gray-400">+</span>
-                        </div>
-                      )}
-                    </button>
                   </div>
                 </div>
               ))}
