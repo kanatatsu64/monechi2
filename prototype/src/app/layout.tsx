@@ -19,7 +19,7 @@ export default function RootLayout({
 }: RootLayoutProps): React.JSX.Element {
   return (
     <html lang="ja">
-      <body className={`${inter.className} bg-white`}>{children}</body>
+      <body className={`${inter.className} bg-gray-100`}>{children}</body>
     </html>
   );
 }
