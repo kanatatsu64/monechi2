@@ -17,7 +17,7 @@ export default function EditReceipt() {
     { name: "カフェラテ", price: 550, shareWith: [] },
     { name: "チョコレートケーキ", price: 680, shareWith: [] },
   ]);
-  const [payer, setPayer] = useState("太郎");
+  const [payer, setPayer] = useState<string | null>(null);
   const [showMemberSelect, setShowMemberSelect] = useState<{
     type: "payer" | "share";
     index?: number;
@@ -37,6 +37,7 @@ export default function EditReceipt() {
             type="text"
             defaultValue="スターバックス"
             className="w-full text-xl font-bold"
+            placeholder="店舗名を入力"
           />
           <input type="date" defaultValue="2024-02-10" className="w-full" />
           <select className="w-full">
@@ -47,56 +48,78 @@ export default function EditReceipt() {
           <div className="flex items-center space-x-2">
             <span className="text-gray-500">支払者:</span>
             <button onClick={() => setShowMemberSelect({ type: "payer" })}>
-              <MemberIcon name={payer} />
+              {payer ? (
+                <MemberIcon name={payer} />
+              ) : (
+                <div className="w-8 h-8 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center">
+                  <span className="text-gray-400">+</span>
+                </div>
+              )}
             </button>
           </div>
         </div>
 
-        {/* 明細リスト */}
-        <div className="space-y-2">
-          {items.map((item, i) => (
-            <div key={i} className="bg-white p-4 rounded-lg shadow space-y-2">
-              <div className="flex justify-between items-center">
-                <input
-                  type="text"
-                  value={item.name}
-                  onChange={(e) => {
-                    const newItems = [...items];
-                    newItems[i].name = e.target.value;
-                    setItems(newItems);
-                  }}
-                  className="flex-1"
-                />
-                <input
-                  type="number"
-                  value={item.price}
-                  onChange={(e) => {
-                    const newItems = [...items];
-                    newItems[i].price = parseInt(e.target.value);
-                    setItems(newItems);
-                  }}
-                  className="w-24 text-right"
-                />
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-gray-500">請求先:</span>
-                <button
-                  onClick={() =>
-                    setShowMemberSelect({ type: "share", index: i })
-                  }
+        {/* 支払者選択後に表示 */}
+        {payer && (
+          <>
+            {/* 明細リスト */}
+            <div className="space-y-2">
+              {items.map((item, i) => (
+                <div
+                  key={i}
+                  className="bg-white p-4 rounded-lg shadow space-y-2"
                 >
-                  {item.shareWith[0] ? (
-                    <MemberIcon name={item.shareWith[0]} />
-                  ) : (
-                    <div className="w-8 h-8 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center">
-                      <span className="text-gray-400">+</span>
-                    </div>
-                  )}
-                </button>
-              </div>
+                  <div className="flex justify-between items-center">
+                    <input
+                      type="text"
+                      value={item.name}
+                      onChange={(e) => {
+                        const newItems = [...items];
+                        newItems[i].name = e.target.value;
+                        setItems(newItems);
+                      }}
+                      className="flex-1"
+                    />
+                    <input
+                      type="number"
+                      value={item.price}
+                      onChange={(e) => {
+                        const newItems = [...items];
+                        newItems[i].price = parseInt(e.target.value);
+                        setItems(newItems);
+                      }}
+                      className="w-24 text-right"
+                    />
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <span className="text-gray-500">請求先:</span>
+                    <button
+                      onClick={() =>
+                        setShowMemberSelect({ type: "share", index: i })
+                      }
+                    >
+                      {item.shareWith[0] ? (
+                        <MemberIcon name={item.shareWith[0]} />
+                      ) : (
+                        <div className="w-8 h-8 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center">
+                          <span className="text-gray-400">+</span>
+                        </div>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+
+            {/* 保存ボタン */}
+            <button
+              onClick={handleSave}
+              className="fixed bottom-6 left-4 right-4 bg-blue-500 text-white py-3 rounded-lg shadow"
+            >
+              保存
+            </button>
+          </>
+        )}
 
         {/* メンバー選択モーダル */}
         {showMemberSelect && (
@@ -110,6 +133,12 @@ export default function EditReceipt() {
                     onClick={() => {
                       if (showMemberSelect.type === "payer") {
                         setPayer(member);
+                        // 支払者選択時に全ての明細の請求先を初期化
+                        const newItems = items.map((item) => ({
+                          ...item,
+                          shareWith: [member],
+                        }));
+                        setItems(newItems);
                       } else if (showMemberSelect.index !== undefined) {
                         const newItems = [...items];
                         newItems[showMemberSelect.index].shareWith = [member];
@@ -132,14 +161,6 @@ export default function EditReceipt() {
             </div>
           </div>
         )}
-
-        {/* 保存ボタン */}
-        <button
-          onClick={handleSave}
-          className="fixed bottom-6 left-4 right-4 bg-blue-500 text-white py-3 rounded-lg shadow"
-        >
-          保存
-        </button>
       </div>
     </main>
   );
