@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { MemberIcon } from "../../components/MemberIcon";
 
 type Item = {
   name: string;
@@ -8,12 +9,19 @@ type Item = {
   shareWith: string[];
 };
 
+const members = ["太郎", "花子", "次郎"];
+
 export default function EditReceipt() {
   const router = useRouter();
   const [items, setItems] = useState<Item[]>([
     { name: "カフェラテ", price: 550, shareWith: [] },
     { name: "チョコレートケーキ", price: 680, shareWith: [] },
   ]);
+  const [payer, setPayer] = useState("太郎");
+  const [showMemberSelect, setShowMemberSelect] = useState<{
+    type: "payer" | "share";
+    index?: number;
+  } | null>(null);
 
   const handleSave = () => {
     // モック保存処理
@@ -36,12 +44,18 @@ export default function EditReceipt() {
             <option>食事</option>
             <option>買い物</option>
           </select>
+          <div className="flex items-center space-x-2">
+            <span className="text-gray-500">支払者:</span>
+            <button onClick={() => setShowMemberSelect({ type: "payer" })}>
+              <MemberIcon name={payer} />
+            </button>
+          </div>
         </div>
 
         {/* 明細リスト */}
         <div className="space-y-2">
           {items.map((item, i) => (
-            <div key={i} className="bg-white p-4 rounded-lg shadow">
+            <div key={i} className="bg-white p-4 rounded-lg shadow space-y-2">
               <div className="flex justify-between items-center">
                 <input
                   type="text"
@@ -64,9 +78,60 @@ export default function EditReceipt() {
                   className="w-24 text-right"
                 />
               </div>
+              <div className="flex items-center space-x-2">
+                <span className="text-gray-500">請求先:</span>
+                <button
+                  onClick={() =>
+                    setShowMemberSelect({ type: "share", index: i })
+                  }
+                >
+                  {item.shareWith[0] ? (
+                    <MemberIcon name={item.shareWith[0]} />
+                  ) : (
+                    <div className="w-8 h-8 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center">
+                      <span className="text-gray-400">+</span>
+                    </div>
+                  )}
+                </button>
+              </div>
             </div>
           ))}
         </div>
+
+        {/* メンバー選択モーダル */}
+        {showMemberSelect && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+            <div className="bg-white rounded-lg p-4 w-full max-w-sm">
+              <div className="space-y-2">
+                {members.map((member) => (
+                  <button
+                    key={member}
+                    className="flex items-center space-x-3 w-full p-2 hover:bg-gray-100 rounded"
+                    onClick={() => {
+                      if (showMemberSelect.type === "payer") {
+                        setPayer(member);
+                      } else if (showMemberSelect.index !== undefined) {
+                        const newItems = [...items];
+                        newItems[showMemberSelect.index].shareWith = [member];
+                        setItems(newItems);
+                      }
+                      setShowMemberSelect(null);
+                    }}
+                  >
+                    <MemberIcon name={member} />
+                    <span>{member}</span>
+                  </button>
+                ))}
+              </div>
+              <button
+                className="mt-4 w-full py-2 bg-gray-100 rounded"
+                onClick={() => setShowMemberSelect(null)}
+              >
+                キャンセル
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* 保存ボタン */}
         <button
