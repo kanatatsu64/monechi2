@@ -1,54 +1,69 @@
-# React + TypeScript + Vite
+# プロジェクト概要
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+このプロジェクトは、以下の技術要素を使用して構築されたフロントエンドアプリケーションです。
 
-Currently, two official plugins are available:
+- **フレームワーク:** React
+- **言語:** TypeScript
+- **ビルドツール:** Vite
+- **開発機能:** HMR (Hot Module Replacement) による高速な開発体験
+- **コード品質:** ESLint によるコード規約の適用
+- **コンポーネントカタログ:** Storybook
+- **テスト環境:** Jest
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 動作確認方法
 
-## Expanding the ESLint configuration
+プロジェクトをローカルで動作させるには、以下の手順を実行します。
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. 依存関係をインストールします。
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. 開発サーバーを起動します。
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```bash
+npm run dev
 ```
+
+開発サーバーが起動し、ブラウザでアプリケーションを確認できます。
+
+3. プロジェクトをビルドします。
+
+```bash
+npm run build
+```
+
+`dist` ディレクトリに本番用のビルドが出力されます。
+
+## Storybook の起動
+
+コンポーネントのカタログである Storybook を起動するには、以下の手順を実行します。
+
+1. Storybook 開発サーバーを起動します。
+
+```bash
+npm run storybook
+```
+
+Storybook が起動し、ブラウザでコンポーネントを確認できます。
+
+2. Storybook をビルドします。
+
+```bash
+npm run build-storybook
+```
+
+`storybook-static` ディレクトリに静的な Storybook が出力されます。
+
+## テストの実行
+
+プロジェクトのテストを実行するには、以下の手順を実行します。
+
+1. テストを実行します。
+
+```bash
+npm test
+```
+
+Jest を使用してテストが実行されます。
