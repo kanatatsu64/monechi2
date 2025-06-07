@@ -17,3 +17,27 @@
 
 - [`doc/github-branch-strategy.md`](doc/github-branch-strategy.md)
   - **要約:** フロントエンドプロジェクトのGitHubブランチ戦略について説明。Gitflowベースの戦略を採用し、`main`, `develop`, `feature/*`, `release/*`, `hotfix/*` の各ブランチの役割と運用フロー、Pull Request、コミットメッセージに関する規約を定義。
+
+- [`doc/git-commit-guidelines.md`](doc/git-commit-guidelines.md)
+  - **要約:** Gitコミットメッセージのガイドラインについて説明。Conventional Commits 仕様に基づいた構造、Type、Scope、Description、Body、Footer の記述方法、および `git status`, `git diff` による確認方法について詳述。
+
+## コード生成時の必須事項
+
+コード生成を行う前に、必ず以下のドキュメントを全て読み込み、内容を理解してください。
+
+- [`doc/ai-code-generation-considerations.md`](doc/ai-code-generation-considerations.md)
+- [`doc/fe-coding-style.md`](doc/fe-coding-style.md)
+- [`doc/fe-directory-structure.md`](doc/fe-directory-structure.md)
+- [`doc/github-branch-strategy.md`](doc/github-branch-strategy.md)
+
+これらのドキュメントに記載されているガイドライン、コーディングスタイル、ディレクトリ構造、ブランチ戦略などを遵守してコードを生成します。
+
+## コミット処理の自動化
+
+ユーザーが `commit` と指示した場合、以下の手順でコミットメッセージを自動生成し、コミットを実行します。
+
+1. `git status` を実行して変更されたファイルを確認します。
+2. `git diff` を実行して具体的な変更内容を取得します。
+3. 変更内容と `doc/git-commit-guidelines.md` に基づき、Conventional Commits 形式の日本語コミットメッセージを生成します。
+4. `git add .` を実行して全ての変更をステージングします。
+5. 生成した日本語メッセージを使用して `git commit -m "生成されたコミットメッセージ"` を実行します。
