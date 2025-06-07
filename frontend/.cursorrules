@@ -1,0 +1,46 @@
+# Cursor用コード生成ルール
+
+このファイルは、Cursorでのコード生成時のガイドラインおよび参照ドキュメントとして機能します。
+
+## 必須参照ドキュメント
+
+コード生成を行う前に、必ず以下のドキュメントを参照してください：
+
+- `doc/ai-code-generation-considerations.md`
+  - 生成AIによるコード生成の考慮事項
+  - コード品質、保守性、セキュリティ、パフォーマンスに関するガイドライン
+
+- `doc/fe-coding-style.md`
+  - フロントエンドのコーディングスタイル
+  - インデント、命名規則、React特有のルール
+
+- `doc/fe-directory-structure.md`
+  - 推奨ディレクトリ構造
+  - 機能ごとのディレクトリ構成
+
+- `doc/github-branch-strategy.md`
+  - GitHubブランチ戦略
+  - ブランチ運用フロー
+
+## コード生成時の基本ルール
+
+1. 上記のドキュメントに記載されているガイドラインを遵守
+2. 生成コードは必ずレビューと検証が必要
+3. セキュリティとパフォーマンスを考慮
+4. 保守性と可読性を重視
+
+## コミットメッセージの自動生成
+
+コミット時は以下の形式に従ってメッセージを生成：
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer]
+```
+
+type: feat, fix, docs, style, refactor, test, chore
+scope: 変更の影響範囲
+description: 変更内容の簡潔な説明 
