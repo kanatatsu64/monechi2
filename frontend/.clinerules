@@ -38,6 +38,7 @@
 
 1. `git status` を実行して変更されたファイルを確認します。
 2. `git diff` を実行して具体的な変更内容を取得します。
-3. 変更内容と `doc/git-commit-guidelines.md` に基づき、Conventional Commits 形式の日本語コミットメッセージを生成します。
-4. `git add .` を実行して全ての変更をステージングします。
-5. 生成した日本語メッセージを使用して `git commit -m "生成されたコミットメッセージ"` を実行します。
+3. コミットガイドラインを遵守して、
+4. 変更内容と `doc/git-commit-guidelines.md` に基づき、Conventional Commits 形式の日本語コミットメッセージを生成します。
+5. `git add .` を実行して全ての変更をステージングします。
+6. 生成した日本語メッセージを使用して `git commit -m "生成されたコミットメッセージ"` を実行します。
